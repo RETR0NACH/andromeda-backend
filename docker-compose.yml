@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: andromeda_db
+    restart: always
+    environment:
+      POSTGRES_USER: andromeda_user
+      POSTGRES_PASSWORD: andromeda_password
+      POSTGRES_DB: andromeda_shop
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
