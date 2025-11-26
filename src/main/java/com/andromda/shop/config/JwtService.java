@@ -16,9 +16,7 @@ import java.util.function.Function;
 
 @Service
 public class JwtService {
-    // IMPORTANTE: En producción, usa una variable de entorno.
-    // Esta clave debe ser larga (256 bits).
-    private static final String SECRET_KEY = "404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970";
+    private static final String SECRET_KEY = "5n3jHLGQq5HjGm1tS9k5Ry0daB5jYpTQm5c2Qr9T2vE=";
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -29,16 +27,22 @@ public class JwtService {
         return claimsResolver.apply(claims);
     }
 
+    // =============================
+    // AGREGA roles al JWT ⬇⬇⬇
+    // =============================
     public String generateToken(UserDetails userDetails) {
-        return generateToken(new HashMap<>(), userDetails);
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("roles", userDetails.getAuthorities()); // <--- AQUÍ SE AGREGA
+        return generateToken(claims, userDetails);
     }
+    // =============================
 
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
         return Jwts.builder()
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24)) // 24 horas
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }

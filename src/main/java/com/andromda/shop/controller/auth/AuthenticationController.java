@@ -1,5 +1,6 @@
 package com.andromda.shop.controller.auth;
 
+import com.andromda.shop.controller.RegisterRequest;
 import com.andromda.shop.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.andromda.shop.controller.auth;
+package com.andromda.shop.controller;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
