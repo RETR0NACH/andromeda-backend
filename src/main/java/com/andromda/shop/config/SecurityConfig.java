@@ -24,6 +24,8 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
 
+    // ... imports
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -34,15 +36,15 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/v1/products/**").permitAll()
 
                         .requestMatchers("/api/v1/users/**").hasRole("ADMIN")
-                        .requestMatchers("/api/v1/orders/**").hasRole("ADMIN")
+
+                        // --- ELIMINA O COMENTA ESTA LÍNEA ---
+                        // .requestMatchers("/api/v1/orders/**").hasRole("ADMIN")  <-- ESTO BLOQUEABA A LOS CLIENTES
+
                         .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
 
-                        .anyRequest().authenticated()
+                        .anyRequest().authenticated() // Esto permite que cualquier usuario logueado (Cliente o Admin) use los endpoints no restringidos
                 )
-                .sessionManagement(session ->
-                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
-                .authenticationProvider(authenticationProvider) // YA EXISTE EN ApplicationConfig
+                // ... resto del código
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
