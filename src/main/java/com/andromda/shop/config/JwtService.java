@@ -16,7 +16,10 @@ import java.util.function.Function;
 
 @Service
 public class JwtService {
-    private static final String SECRET_KEY = "5n3jHLGQq5HjGm1tS9k5Ry0daB5jYpTQm5c2Qr9T2vE=";
+    // Busca la variable "JWT_SECRET", si no existe (local), usa la clave por defecto
+    private static final String SECRET_KEY = System.getenv("JWT_SECRET") != null
+            ? System.getenv("JWT_SECRET")
+            : "5n3jHLGQq5HjGm1tS9k5Ry0daB5jYpTQm5c2Qr9T2vE=";
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
