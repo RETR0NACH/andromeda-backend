@@ -36,11 +36,12 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/v1/products/**").permitAll()
 
                         .requestMatchers("/api/v1/users/**").hasRole("ADMIN")
-
-                        // --- ELIMINA O COMENTA ESTA LÍNEA ---
-                        // .requestMatchers("/api/v1/orders/**").hasRole("ADMIN")  <-- ESTO BLOQUEABA A LOS CLIENTES
-
                         .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
+                        .requestMatchers(
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html"
+                        ).permitAll()
 
                         .anyRequest().authenticated() // Esto permite que cualquier usuario logueado (Cliente o Admin) use los endpoints no restringidos
                 )
